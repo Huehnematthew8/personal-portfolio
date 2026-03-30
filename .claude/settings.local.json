@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-git --use-npm)",
+      "Bash(npx create-next-app@latest . --typescript --tailwind --eslint --app --src-dir --import-alias \"@/*\" --no-git --use-npm --no-turbopack)",
+      "Bash(npm install:*)",
+      "Bash(python3:*)",
+      "Bash(cp \"/Users/matthewhuehne/Desktop/Resume_2025 \\(TBU\\).pdf\" /Users/matthewhuehne/personal_portfolio/public/resume.pdf)",
+      "Bash(rm /Users/matthewhuehne/personal_portfolio/public/images/asset_* /Users/matthewhuehne/personal_portfolio/public/images/exp_* /Users/matthewhuehne/personal_portfolio/public/images/hero_* /Users/matthewhuehne/personal_portfolio/public/images/accolade_* /Users/matthewhuehne/personal_portfolio/public/audio/player_*)",
+      "Bash(npm run:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(gh auth:*)"
+    ]
+  }
+}
