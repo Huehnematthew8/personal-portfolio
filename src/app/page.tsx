@@ -141,7 +141,7 @@ export default function Home() {
 <p>{"Running and the gym are the two things that reliably clear my head. Neither started because I enjoyed them, which is the whole reason I trust them now."}</p>
 </div></div>
 <div className="tl-row"><div className="tl-card rv">
-<div className="tl-head"><svg viewBox="0 0 24 24" fill="none" stroke="var(--indigo)" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="5.5" r="2.5"></circle><path d="M10 8.5c0 2.5-1 3.5-1 5.5s.8 3 .5 5h5c-.3-2 .2-3.2.5-5s-1-3-1-5.5"></path><path d="M7 19h10"></path></svg><h3>{"Chess Player"}</h3></div>
+<div className="tl-head"><svg viewBox="0 0 24 24" fill="none" stroke="var(--indigo)" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="5.5" r="2.5"></circle><path d="M10 8.5c0 2.5-1 3.5-1 5.5s.8 3 .5 5h5c-.3-2 .2-3.2.5-5s-1-3-1-5.5"></path><path d="M7 19h10"></path></svg><h3>{"Chess Addict"}</h3></div>
 <p>{"Rated around 1500 on chess.com and still grinding. Mostly rapid, mostly losing to people who saw it three moves earlier than I did."}</p>
 </div></div>
 </div>
