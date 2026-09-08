@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 const pages = ["home", "about", "resume", "projects", "music", "contact"] as const;
 type Page = (typeof pages)[number];
-const lines = ["a consultant.", "a musician.", "a runner.", "a chess addict.", "a golfer.", "building apps.", "a problem solver."];
+const lines = ["a consultant.", "a musician.", "a runner.", "a chess addict.", "building apps.", "a problem solver."];
 const isPage = (value: string): value is Page => pages.includes(value as Page);
 const formatTime = (value: number) => { const seconds=Number.isFinite(value) ? Math.floor(value) : 0; return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,"0")}`; };
 
@@ -330,7 +330,7 @@ export default function Home() {
 <section className={"page" + (page === "music" ? " on" : "")} id="p-music" aria-hidden={page !== "music"}>
 <h1 className="ptitle rv">{"Music"}</h1>
 <div className="mus">
-<p className="rv">{"I produce in Ableton and I am slowly getting better at guitar. It started as something to do that had nothing to do with work, and it has stayed that way, which is probably why I have kept at it."}</p>
+<p className="rv">{"I produce in Ableton and I’m slowly getting better at guitar. Making music and building apps give me a similar kind of satisfaction. In both, I get to be creative and experiment with an idea until I’ve made something I’m happy with."}</p>
 <p className="rv"><b>{"Alone with You"}</b>{" is the first track I finished start to end. It is not going to trouble the charts, but every part of it is mine, which was the point. Working on the next one."}</p>
 <div className="player rv">
 <div className="pl-top">
