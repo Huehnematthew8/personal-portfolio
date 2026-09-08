@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 
 const pages = ["home", "about", "resume", "projects", "music", "contact"] as const;
 type Page = (typeof pages)[number];
-const lines = ["a consultant.", "a musician.", "a runner.", "a chess player.", "a golfer.", "building apps.", "a problem solver."];
+const lines = ["a consultant.", "a musician.", "a runner.", "a chess addict.", "a golfer.", "building apps.", "a problem solver."];
 const isPage = (value: string): value is Page => pages.includes(value as Page);
 const formatTime = (value: number) => { const seconds=Number.isFinite(value) ? Math.floor(value) : 0; return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,"0")}`; };
 
