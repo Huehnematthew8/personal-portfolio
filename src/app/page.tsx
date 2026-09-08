@@ -1,878 +1,377 @@
 "use client";
 
-import { useState, useRef, useEffect, FormEvent } from "react";
+import { useEffect, useRef, useState } from "react";
 
-/* ═══════════════════════════════════════════════════════
-   NAV
-   ═══════════════════════════════════════════════════════ */
-function Nav({
-  onNavigate,
-  onResume,
-}: {
-  onNavigate: (id: string) => void;
-  onResume: () => void;
-}) {
-  const [open, setOpen] = useState(false);
-  const go = (id: string) => {
-    setOpen(false);
-    onNavigate(id);
-  };
-  return (
-    <nav>
-      <div className="nav-inner">
-        <button className="nav-logo" onClick={() => go("hero")}>
-          <svg className="nav-monstera" viewBox="0 0 24 24" fill="none" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="12" y1="1" x2="12" y2="5" stroke="#6B7F5E" strokeWidth="1.2" />
-            <path d="M8 5 Q7 11 9 14 Q12 16 15 14 Q17 11 16 5Z" fill="#C4653A" stroke="#C4653A" strokeWidth="0.5" />
-            <line x1="8" y1="5" x2="16" y2="5" stroke="#C4653A" strokeWidth="1.2" />
-            <path d="M12 9 Q8 6 5 8 Q7 5 12 7" stroke="#6B7F5E" strokeWidth="1.2" />
-            <path d="M12 9 Q16 6 19 8 Q17 5 12 7" stroke="#6B7F5E" strokeWidth="1.2" />
-            <path d="M12 11 Q7 10 5 13 Q8 11 12 12" stroke="#6B7F5E" strokeWidth="1.2" />
-            <path d="M12 11 Q17 10 19 13 Q16 11 12 12" stroke="#6B7F5E" strokeWidth="1.2" />
-          </svg>
-          MATTHEW HUEHNE
-        </button>
-        <button className="nav-toggle" onClick={() => setOpen(!open)} aria-label="Menu">
-          <span /><span /><span />
-        </button>
-        <div className={`nav-links${open ? " open" : ""}`}>
-          <button className="nav-link" onClick={() => go("about-section")}>About</button>
-          <button className="nav-link" onClick={() => go("works-section")}>Projects</button>
-          <button className="nav-link" onClick={() => go("exp-section")}>Experience</button>
-          <button className="nav-link" onClick={() => go("contact-section")}>Contact</button>
-          <button className="nav-resume" onClick={onResume}>Resume ↗</button>
-        </div>
-      </div>
-    </nav>
-  );
-}
+const pages = ["home", "about", "resume", "projects", "music", "contact"] as const;
+type Page = (typeof pages)[number];
+const lines = ["a consultant.", "a musician.", "a runner.", "a chess player.", "a golfer.", "building apps.", "a problem solver."];
+const isPage = (value: string): value is Page => pages.includes(value as Page);
+const formatTime = (value: number) => { const seconds=Number.isFinite(value) ? Math.floor(value) : 0; return `${Math.floor(seconds/60)}:${String(seconds%60).padStart(2,"0")}`; };
 
-/* ═══════════════════════════════════════════════════════
-   HERO
-   ═══════════════════════════════════════════════════════ */
-function Hero() {
-  return (
-    <header className="home-hero" id="hero">
-      <div className="hero-top">
-        <div className="hero-left">
-          <p className="section-label fade-up">01 / Who I Am</p>
-          <h1 className="hero-name fade-up delay-1">MATTHEW<br />HUEHNE</h1>
-          <p className="hero-sub fade-up delay-2">
-            Finance and CS graduate. I solve problems, ask uncomfortable questions, and care a lot about what gets built and why.
-          </p>
-          <p className="hero-loc fade-up delay-3">
-            Brisbane, AU&nbsp;&nbsp;·&nbsp;&nbsp;
-            <a href="mailto:huehnematthew8@gmail.com">huehnematthew8@gmail.com</a>
-            &nbsp;&nbsp;·&nbsp;&nbsp;Finance &amp; Computer Science Graduate, QUT 2025
-          </p>
-        </div>
-        <div className="hero-photo fade-up delay-2">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/headshot.png" alt="Matthew Huehne" />
-        </div>
-      </div>
-      <div className="hero-divider" />
-    </header>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   ABOUT
-   ═══════════════════════════════════════════════════════ */
-function About() {
-  return (
-    <section className="about-grid" id="about-section">
-      <div className="about-left">
-        <p className="section-label">02 / Background</p>
-        <p>Born in Indonesia, raised in the Philippines and Canada, now based in Brisbane. A global upbringing that shaped adaptability and a pattern-seeking perspective.</p>
-        <div className="about-pull-quote">
-          <span>&ldquo;The pursuit of becoming the best version of yourself is not a destination &mdash; it&apos;s the only direction worth moving in.&rdquo;</span>
-        </div>
-      </div>
-      <div className="about-right">
-        <p className="big-italic">
-          Analyst in the Engineering, AI &amp; Data practice at{" "}
-          <a href="https://www.deloitte.com/au/en.html" target="_blank" rel="noopener noreferrer">Deloitte</a>,
-          working across data centre strategy and cloud migration engagements, contributing to business development and client delivery across a range of industries.
-        </p>
-
-        <p>For pretty much my entire life I carried a fixed mindset &mdash; convinced I had to work with what I was given. The shift that changed everything was choosing to do the things I least wanted to do. Joining 180 Degrees Consulting, standing up in front of rooms, competing on international stages in LA, Bangkok and Melbourne. Alongside that, compulsive reading gave me something I hadn&apos;t had before: perspective. The reps taught me that discomfort is just the feeling of growing.</p>
-
-        <p>I am drawn to creating things &mdash; ideas, products, teams, solutions. I thrive in environments where there is a real problem to solve, room to lead, and something meaningful to make. Finance gave me the ability to think commercially. Computer science gave me the ability to build. The case competitions, the consulting work, and the projects I have shipped independently are all expressions of the same instinct: find the gap and go after it.</p>
-
-        <p className="about-hobbies">Outside of work: music production (Ableton), getting better on guitar, reading, running, soccer, and golf. Recovering CS:GO and League of Legends addict. Now mostly single-player games when life allows.</p>
-
-        <div className="traits">
-          <div>
-            <div className="trait-icon">
-              <svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="white" strokeWidth="1.5" /><circle cx="7" cy="7" r="2" fill="white" /></svg>
-            </div>
-            <div className="trait-label">Growth Mindset</div>
-            <div className="trait-sub">Reps over raw talent</div>
-          </div>
-          <div>
-            <div className="trait-icon">
-              <svg viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" stroke="white" strokeWidth="1.5" /><rect x="5" y="5" width="4" height="4" fill="white" /></svg>
-            </div>
-            <div className="trait-label">Product First</div>
-            <div className="trait-sub">Ideas worth building</div>
-          </div>
-          <div>
-            <div className="trait-icon">
-              <svg viewBox="0 0 14 14" fill="none"><path d="M2 12L7 2L12 12" stroke="white" strokeWidth="1.5" /><line x1="4" y1="9" x2="10" y2="9" stroke="white" strokeWidth="1" /></svg>
-            </div>
-            <div className="trait-label">Global Native</div>
-            <div className="trait-sub">4 Countries, 3 Continents</div>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   SKILLS STRIP
-   ═══════════════════════════════════════════════════════ */
-const skills = [
-  { name: "Python", hl: true }, { name: "JavaScript", hl: true }, { name: "Next.js", hl: true },
-  { name: "Claude AI", hl: true }, { name: "AWS", hl: true }, { name: "Supabase", hl: true },
-  { name: "C# · C · Java", hl: false }, { name: "SQL", hl: false }, { name: "Cypress", hl: false },
-  { name: "Git / GitHub", hl: false }, { name: "Tailwind CSS", hl: false },
-  { name: "Agile / Scrum", hl: false }, { name: "Jira · Confluence", hl: false },
-  { name: "Tech Strategy", hl: false }, { name: "Business Analysis", hl: false },
-  { name: "Filipino · English", hl: false }, { name: "Ableton", hl: true },
-  { name: "Music Production", hl: false }, { name: "Guitar", hl: false },
-];
-
-function SkillsStrip() {
-  const tags = [...skills, ...skills];
-  return (
-    <div className="skills-strip-outer">
-      <span className="skills-label">Skills &amp; Tools</span>
-      <div className="skills-strip">
-        <div className="skills-inner">
-          {tags.map((s, i) => (
-            <span key={i} className={`skill-tag${s.hl ? " highlight" : ""}`}>{s.name}</span>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   PROJECTS / WORKS
-   ═══════════════════════════════════════════════════════ */
-function Works({ onProject }: { onProject: (id: string) => void }) {
-  return (
-    <section className="works-section" id="works-section">
-      <div className="works-header">
-        <h2 className="works-title">PROJECTS</h2>
-        <span className="works-count">Candor · PH Fintech · Provenance</span>
-      </div>
-      <div className="works-grid">
-        {/* Candor */}
-        <div className="work-card" onClick={() => onProject("candor")} style={{ position: "relative" }}>
-          <div className="work-thumb">
-            <div style={{ height: "100%", background: "var(--charcoal)", display: "flex", flexDirection: "column", gap: 0, padding: 20 }}>
-              {[1, 2, 3, 4, 5].map((n) => (
-                <div key={n} style={{ display: "flex", alignItems: "center", gap: 8, borderBottom: "1px solid rgba(255,255,255,0.07)", padding: "6px 0" }}>
-                  <div style={{ width: n === 1 || n === 4 ? 34 : n === 2 ? 40 : n === 3 ? 55 : 38, height: 5, background: n === 1 ? "var(--terracotta)" : n === 4 ? "rgba(255,255,255,0.12)" : "rgba(255,255,255,0.1)", flex: n === 1 || n === 4 ? "none" : undefined }} />
-                  <div style={{ height: 4, background: "rgba(255,255,255,0.1)", flex: 1 }} />
-                  <div style={{ width: 5, height: 5, background: "rgba(255,255,255,0.18)", borderRadius: "50%" }} />
-                </div>
-              ))}
-            </div>
-            <div className="coming-soon-overlay"><span className="coming-soon-badge">Coming Soon</span></div>
-          </div>
-          <div className="work-info">
-            <div className="work-name">Candor</div>
-            <p className="work-desc">The job tracker for deliberate applicants. Built with Next.js 14, Supabase &amp; Claude AI to force intentional applications over volume.</p>
-            <button className="work-link">View Project</button>
-          </div>
-        </div>
-
-        {/* PH Fintech */}
-        <div className="work-card" style={{ position: "relative", cursor: "default" }}>
-          <div className="work-thumb">
-            <div style={{ height: "100%", background: "#18181a", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-                <rect x="8" y="20" width="48" height="30" stroke="rgba(250,248,245,0.2)" strokeWidth="1" />
-                <line x1="8" y1="32" x2="56" y2="32" stroke="rgba(250,248,245,0.1)" />
-                <line x1="24" y1="20" x2="24" y2="50" stroke="rgba(250,248,245,0.08)" />
-                <circle cx="32" cy="11" r="6" stroke="rgba(196,101,58,0.5)" strokeWidth="1" />
-                <path d="M20 42 L28 36 L32 40 L40 30 L48 34" stroke="rgba(107,127,94,0.6)" strokeWidth="1.5" />
-              </svg>
-            </div>
-            <div className="coming-soon-overlay"><span className="coming-soon-badge">Coming Soon</span></div>
-          </div>
-          <div className="work-info">
-            <div className="work-name">PH Fintech</div>
-            <p className="work-desc">Regional payment infrastructure design for the Philippine market &mdash; simplifying cross-border transactions with low-friction UX.</p>
-            <span className="work-link" style={{ opacity: 0.4, cursor: "default" }}>In Development</span>
-          </div>
-        </div>
-
-        {/* Provenance */}
-        <div className="work-card" onClick={() => onProject("provenance")} style={{ position: "relative" }}>
-          <div className="work-thumb">
-            <div style={{ height: "100%", background: "#e6e2da", display: "flex", flexDirection: "column", alignItems: "flex-start", justifyContent: "flex-end", padding: 18, gap: 6 }}>
-              {[68, 50, 75].map((w, i) => (
-                <div key={i}>
-                  {i === 2 && <div style={{ height: 1, background: "rgba(44,44,42,0.1)", width: "100%", margin: "4px 0" }} />}
-                  <div style={{ display: "flex", justifyContent: "space-between", width: "100%" }}>
-                    <div style={{ height: 5, background: "rgba(44,44,42,0.12)", width: `${w}%` }} />
-                    <div style={{ height: 5, background: i === 2 ? "rgba(196,101,58,0.35)" : "rgba(44,44,42,0.2)", width: 36 }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="coming-soon-overlay"><span className="coming-soon-badge">Coming Soon</span></div>
-          </div>
-          <div className="work-info">
-            <div className="work-name">Provenance</div>
-            <p className="work-desc">Ethical handmade marketplace with mandatory price breakdowns. Built to restore trust and transparency to artisan commerce in Australia.</p>
-            <button className="work-link">View Project</button>
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   EXPERIENCE + ACCOLADES
-   ═══════════════════════════════════════════════════════ */
-const experience = [
-  { logo: "/images/logo_deloitte.png", year: "Jul 2025 → Present", org: "Deloitte", role: "Engineering, AI & Data Analyst", desc: "Working across data centre strategy and cloud migration engagements, contributing to business development and practice initiatives across a range of industries." },
-  { logo: "/images/logo_ey.png", year: "Jan 2025 → Feb 2025", org: "Ernst & Young (EY)", role: "Technology Strategy Intern", desc: "Developed proposal documents for government projects and assisted in bid submissions, collaborating with stakeholders to deliver high-quality client deliverables aligned with procurement standards." },
-  { logo: "/images/logo_moonward.png", year: "Jun 2024 → Jan 2025", org: "Moonward Apps", role: "Quality Assurance Tester", desc: "Hired for manual testing but taught myself Cypress outside of work hours to automate the testing process on each app being deployed. Went beyond the scope of the role because I could see it would ship products faster, and it did." },
-  { logo: "/images/logo_deloitte2.png", year: "Nov 2023 → Feb 2024", org: "Deloitte", role: "Cloud, AI, Data & Engineering Intern", desc: "Supported senior consultants on technology strategy, analysed client feedback to create roadmaps, and designed technology radar graphs and service delivery models based on stakeholder input." },
-  { logo: "/images/logo_180dc.png", year: "Jul 2023 → Nov 2023", org: "180 Degrees Consulting QUT", role: "Consulting Director", desc: "Led a team of 5 on a strategic project for a non-profit supporting veteran employment. Collaborated with KPMG mentors to redesign a hiring guide, boosting corporate engagement." },
-  { logo: "/images/logo_paedix.png", year: "Mar 2023 → Oct 2023", org: "Paedix Paediatrics", role: "Digital Marketing & Data Intern", desc: "Built a centralised database of medical practitioners using Python and automated marketing efforts, increasing online presence and streamlining clinic operations." },
-  { logo: "/images/logo_codecamp.png", year: "Dec 2021 → Oct 2023", org: "Code Camp", role: "Head Teacher", desc: "Instructed primary school students in computational thinking and interactive coding. Led curriculum delivery and classroom management for classes of up to 30 students." },
-  { logo: "/images/logo_lifeshape.png", year: "Feb 2021 → Sep 2023", org: "LifeShape Clinic", role: "Client Services Representative", desc: "Managed client inquiries and appointments in collaboration with clinicians, supported clinic operations and marketing, and delivered customer service excellence in a healthcare setting." },
-];
-
-const accolades = [
-  { name: "Marshall Intl. Case Competition", sub: "USC Marshall School · Los Angeles, USA · Feb 2025", rank: "2ND", rankClass: "", photos: ["/images/marshall_trophy.png", "/images/marshall_finals.png"], desc: "Represented QUT among 20 top global business schools at USC Marshall. Presented strategic solutions for Omaha Productions and InvestCloud under pressure." },
-  { name: "Chulalongkorn Intl. Business Case", sub: "Bangkok, Thailand · May 2025 · Division 3rd", rank: "DIV. 3RD", rankClass: "olive", photos: ["/images/chula_team.png", "/images/chula_cert.png"], desc: "Placed 3rd in division at an international competition hosted by Chulalongkorn Business School, solving 8-hour and 24-hour cases for Phyathai Hospital and TOA Paint alongside teams from across Asia and beyond." },
-  { name: "L'Oréal Brandstorm AU/NZ", sub: "National Finalist · Melbourne · May 2025", rank: "FINALIST", rankClass: "finalist", photos: ["/images/loreal_finals.png", "/images/loreal_team.png", "/images/loreal_presentation.png"], desc: "One of five national finalists from 150+ AU/NZ submissions. L'Oréal flew the team to Melbourne and covered accommodation to pitch Team HairPress — a men's beauty tech concept — directly to their senior executives at Melbourne HQ.", ytId: "qoLpjN__0fY" },
-  { name: "AWS Certified Cloud Practitioner", sub: "CLF-C02", rank: "CERTIFIED", rankClass: "cert", photos: [], desc: "Certified in core AWS fundamentals — cloud concepts, security, architecture, pricing, and support models." },
-];
-
-function Experience({ onYT }: { onYT: (id: string) => void }) {
-  return (
-    <section className="exp-section" id="exp-section">
-      <div>
-        <p className="exp-label">03 / Experience</p>
-        {experience.map((e, i) => (
-          <div key={i} className="exp-item" style={i === experience.length - 1 ? { borderBottom: "none" } : undefined}>
-            <div className="exp-logo-row">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img className="exp-logo" src={e.logo} alt={`${e.org} logo`} />
-              <div>
-                <div className="exp-year">{e.year}</div>
-                <div className="exp-org">{e.org}</div>
-                <div className="exp-role">{e.role}</div>
-              </div>
-            </div>
-            <div className="exp-desc"><p>{e.desc}</p></div>
-          </div>
-        ))}
-      </div>
-      <div>
-        <p className="exp-label">04 / Recognition</p>
-        {accolades.map((a, i) => (
-          <div key={i} className="accolade-item" style={i === accolades.length - 1 ? { borderBottom: "none" } : undefined}>
-            <div className="accolade-top">
-              <div>
-                <div className="accolade-name">{a.name}</div>
-                <div className="accolade-sub">{a.sub}</div>
-              </div>
-              <div
-                className="accolade-rank"
-                style={{
-                  color: a.rankClass === "olive" ? "var(--olive)" : a.rankClass === "cert" ? "var(--olive)" : a.rankClass === "finalist" ? "var(--terracotta)" : undefined,
-                  fontSize: a.rankClass === "finalist" || a.rankClass === "olive" || a.rankClass === "cert" ? "0.68rem" : undefined,
-                  letterSpacing: a.rankClass ? "0.06em" : undefined,
-                  fontWeight: 700,
-                }}
-              >
-                {a.rank}
-              </div>
-            </div>
-            {a.photos.length > 0 && (
-              <div className="accolade-photos">
-                {a.photos.map((p, j) => (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img key={j} src={p} alt={`${a.name} photo`} />
-                ))}
-                {a.ytId && (
-                  <div className="yt-thumb" onClick={() => onYT(a.ytId!)} title="Watch HairPress Video">
-                    <div className="yt-thumb-inner">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={`https://img.youtube.com/vi/${a.ytId}/mqdefault.jpg`} alt="HairPress submission video" style={{ height: 160, width: "auto", objectFit: "cover", border: "1px solid var(--outline)", display: "block" }} />
-                      <div className="yt-play-overlay">
-                        <svg viewBox="0 0 24 24" fill="white" width="32" height="32"><polygon points="5,3 19,12 5,21" /></svg>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            )}
-            <div className="accolade-desc"><p>{a.desc}</p></div>
-          </div>
-        ))}
-        <div className="testimonial-block">
-          <p className="testimonial-text">&ldquo;Matthew brings a rare combination of structural thinking and technical curiosity.&rdquo;</p>
-          <p className="testimonial-by">&mdash; Project Director, Deloitte AI</p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   MUSIC PLAYER
-   ═══════════════════════════════════════════════════════ */
-function MusicSection() {
-  const audioRef = useRef<HTMLAudioElement>(null);
-  const [playing, setPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [bars, setBars] = useState<number[]>([]);
-
-  useEffect(() => {
-    const b = Array.from({ length: 80 }, () => 20 + Math.random() * 80);
-    setBars(b);
-  }, []);
-
-  const fmt = (s: number) => {
-    const m = Math.floor(s / 60);
-    const sec = Math.floor(s % 60);
-    return `${m}:${sec < 10 ? "0" : ""}${sec}`;
-  };
-
-  const toggle = () => {
-    const a = audioRef.current;
-    if (!a) return;
-    if (a.paused) { a.play(); setPlaying(true); } else { a.pause(); setPlaying(false); }
-  };
-
-  useEffect(() => {
-    const a = audioRef.current;
-    if (!a) return;
-    const onMeta = () => setDuration(a.duration);
-    const onTime = () => setCurrentTime(a.currentTime);
-    const onEnd = () => setPlaying(false);
-    a.addEventListener("loadedmetadata", onMeta);
-    a.addEventListener("timeupdate", onTime);
-    a.addEventListener("ended", onEnd);
-    return () => {
-      a.removeEventListener("loadedmetadata", onMeta);
-      a.removeEventListener("timeupdate", onTime);
-      a.removeEventListener("ended", onEnd);
-    };
-  }, []);
-
-  const playedBars = duration ? Math.floor((currentTime / duration) * bars.length) : 0;
-
-  return (
-    <section className="music-section" id="music-section">
-      <div className="music-inner">
-        <div>
-          <p className="section-label">05 / Beyond the Brief</p>
-          <h2 className="music-title">Outside the 9-to-5.</h2>
-          <p className="music-sub">
-            The same instinct that draws me to building products pulls me toward making music. I picked up Ableton the same way I approach most things I&apos;m bad at &mdash; by putting in the reps until something clicks. <em>Alone with You</em> is the first track I finished from scratch. Guitar is still a work in progress. The creating never stops.
-          </p>
-          <div className="music-tags">
-            <span className="music-tag">Ableton Live</span>
-            <span className="music-tag">Guitar</span>
-            <span className="music-tag">Running &amp; Soccer</span>
-            <span className="music-tag">Reading</span>
-          </div>
-        </div>
-        <div>
-          <div className="music-player">
-            <div style={{ marginBottom: "1.5rem" }}>
-              <span className="player-title">Alone with You</span>
-              <span className="player-artist">Matthew Huehne</span>
-            </div>
-            <div className="player-waveform">
-              <div className="waveform-bars">
-                {bars.map((h, i) => (
-                  <span key={i} style={{ height: `${h}%` }} className={i < playedBars ? "played" : ""} />
-                ))}
-              </div>
-            </div>
-            <div className="player-time-row">
-              <span className="player-time">{fmt(currentTime)}</span>
-              <input
-                type="range"
-                className="player-seek"
-                value={currentTime}
-                min={0}
-                max={duration || 100}
-                step={0.1}
-                onChange={(e) => {
-                  if (audioRef.current) audioRef.current.currentTime = Number(e.target.value);
-                }}
-              />
-              <span className="player-time">{fmt(duration)}</span>
-            </div>
-            <div className="player-btn-row">
-              <button className="player-play" onClick={toggle}>
-                {playing ? (
-                  <svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="3" width="4" height="18" /><rect x="14" y="3" width="4" height="18" /></svg>
-                ) : (
-                  <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21" /></svg>
-                )}
-              </button>
-              <span className="player-label">{playing ? "Now playing" : "Play preview"}</span>
-            </div>
-            <audio ref={audioRef} src="/audio/alone_with_you.mp3" preload="metadata" />
-          </div>
-          <p className="music-note">More tracks in progress. Creating is the hobby that feels least like a hobby.</p>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   CTA + CONTACT FORM
-   ═══════════════════════════════════════════════════════ */
-function ContactCTA() {
-  const [sent, setSent] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSubmitting(true);
-    const form = e.currentTarget;
-    const data = new FormData(form);
-    try {
-      // TODO: Replace with your Formspree form ID from https://formspree.io
-      await fetch("https://formspree.io/f/YOUR_FORM_ID", {
-        method: "POST",
-        body: data,
-        headers: { Accept: "application/json" },
-      });
-      setSent(true);
-      form.reset();
-    } catch {
-      // Fallback to mailto
-      const name = data.get("name") as string;
-      const email = data.get("email") as string;
-      const msg = data.get("message") as string;
-      window.location.href = `mailto:huehnematthew8@gmail.com?subject=${encodeURIComponent(`Portfolio enquiry from ${name}`)}&body=${encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nMessage:\n${msg}`)}`;
-    }
-    setSubmitting(false);
-  };
-
-  return (
-    <>
-      <div className="cta-block" id="contact-section">
-        <div className="cta-inner">
-          <div>
-            <h2 className="cta-headline">LET&apos;S<br />BUILD.</h2>
-          </div>
-          <div>
-            <p className="cta-sub">Open to ambitious roles in AI, product, and engineering. Based in Brisbane &mdash; willing to relocate for the right opportunity.</p>
-            <div className="cta-email"><a href="mailto:huehnematthew8@gmail.com">huehnematthew8@gmail.com</a></div>
-            <div className="cta-socials">
-              <a className="cta-social" href="https://linkedin.com/in/matthewhuehne" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-              <a className="cta-social" href="https://github.com/Huehnematthew8" target="_blank" rel="noopener noreferrer">GitHub</a>
-              <a className="cta-social" href="https://leetcode.com/u/huehnem" target="_blank" rel="noopener noreferrer">LeetCode</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <section className="contact-form-section">
-        <div className="form-grid">
-          <div>
-            <p className="section-label">06 / Get in Touch</p>
-            <h2 className="form-heading">Let&apos;s talk.</h2>
-            <p className="form-sub">A role, a collab, a project, or just a good conversation &mdash; fill in the form and it goes straight to me.</p>
-          </div>
-          <form onSubmit={handleSubmit}>
-            <div className="form-field">
-              <label className="form-label">Your Name</label>
-              <input className="form-input" type="text" name="name" placeholder="Jane Smith" required />
-            </div>
-            <div className="form-field">
-              <label className="form-label">Your Email</label>
-              <input className="form-input" type="email" name="email" placeholder="jane@example.com" required />
-            </div>
-            <div className="form-field">
-              <label className="form-label">Message</label>
-              <textarea className="form-textarea" name="message" placeholder="What's on your mind?" required />
-            </div>
-            <button className="form-submit" type="submit" disabled={submitting}>
-              {submitting ? "Sending..." : "Send Message →"}
-            </button>
-            {sent && (
-              <p style={{ fontFamily: "var(--nr)", fontStyle: "italic", color: "var(--olive)", marginTop: "1rem", fontSize: "0.95rem" }}>
-                Message sent — I&apos;ll be in touch soon.
-              </p>
-            )}
-          </form>
-        </div>
-      </section>
-    </>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   FOOTER
-   ═══════════════════════════════════════════════════════ */
-function Footer() {
-  return (
-    <footer>
-      <div className="footer-inner">
-        <div>
-          <div className="footer-logo">MATTHEW HUEHNE</div>
-          <div className="footer-copy">&copy; 2026</div>
-        </div>
-        <div className="footer-links">
-          <span className="footer-built">Built with Claude &amp; Cursor</span>
-          <a href="https://linkedin.com/in/matthewhuehne" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-          <a href="https://github.com/Huehnematthew8" target="_blank" rel="noopener noreferrer">GitHub</a>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   PROJECT: CANDOR
-   ═══════════════════════════════════════════════════════ */
-function CandorPage({ onBack, onNext }: { onBack: () => void; onNext: () => void }) {
-  return (
-    <div>
-      <div className="project-hero">
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
-          <span className="project-badge">Coming Soon</span>
-          <span className="project-year">2024</span>
-        </div>
-        <div className="project-grid">
-          <div>
-            <h1 className="project-title fade-up">Candor</h1>
-            <p className="project-tagline fade-up delay-1">&ldquo;The job tracker for people who apply with intention, not volume.&rdquo;</p>
-          </div>
-          <div className="project-meta fade-up delay-2">
-            <p className="project-meta-label">Technologies</p>
-            <p className="project-meta-value">Next.js 14, Supabase,<br />Tailwind CSS, Claude AI</p>
-            <p className="project-meta-label">Type</p>
-            <p className="project-meta-value">Full-stack SaaS, Solo build</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Mockup hero image */}
-      <div style={{ maxWidth: 1440, margin: "0 auto", padding: "0 3rem 5rem" }}>
-        <div style={{ aspectRatio: "21/9", background: "var(--charcoal)", overflow: "hidden", display: "flex", flexDirection: "column", justifyContent: "center", padding: "36px 56px", gap: 10 }}>
-          <div style={{ display: "flex", gap: 20, marginBottom: 6 }}>
-            {["Status", "Company", "Role", "Fit Score"].map((h) => (
-              <div key={h} style={{ width: h === "Status" ? 64 : h === "Fit Score" ? 70 : h === "Role" ? 120 : undefined, flex: h === "Company" ? 1 : undefined, fontFamily: "var(--sg)", fontSize: "0.48rem", letterSpacing: "0.1em", textTransform: "uppercase" as const, color: "rgba(250,248,245,0.25)" }}>{h}</div>
-            ))}
-          </div>
-          <div style={{ height: 1, background: "rgba(250,248,245,0.05)", marginBottom: 2 }} />
-          {[
-            { status: "Interviewing", bg: "var(--terracotta)", company: "Deloitte - AI Strategy", role: "Analyst, Data & AI", score: "9.4", scoreColor: "var(--terracotta)" },
-            { status: "Applied", bg: "rgba(107,127,94,0.75)", company: "Atlassian - Growth", role: "Product Manager", score: "7.8", scoreColor: "var(--olive)" },
-            { status: "Draft", bg: "rgba(250,248,245,0.08)", company: "Canva - Design Platform", role: "Strategy Analyst", score: "-", scoreColor: "rgba(250,248,245,0.25)" },
-          ].map((row, i) => (
-            <div key={i} style={{ display: "flex", gap: 20, alignItems: "center", padding: "7px 0", borderBottom: "1px solid rgba(250,248,245,0.05)" }}>
-              <div style={{ width: 64 }}>
-                <span style={{ fontFamily: "var(--sg)", fontSize: "0.48rem", textTransform: "uppercase" as const, background: row.bg, color: row.status === "Draft" ? "rgba(250,248,245,0.45)" : "white", padding: "2px 6px", letterSpacing: "0.05em" }}>{row.status}</span>
-              </div>
-              <div style={{ flex: 1, fontFamily: "var(--nr)", fontStyle: "italic", fontSize: "0.68rem", color: "rgba(250,248,245,0.65)" }}>{row.company}</div>
-              <div style={{ width: 120, fontFamily: "var(--sg)", fontSize: "0.6rem", color: "rgba(250,248,245,0.38)" }}>{row.role}</div>
-              <div style={{ width: 70, fontFamily: "var(--sg)", fontSize: "0.68rem", color: row.scoreColor, fontWeight: 600 }}>{row.score}</div>
-            </div>
-          ))}
-          <div style={{ display: "flex", gap: 20, alignItems: "center", padding: "7px 0" }}>
-            <div style={{ width: 64 }} />
-            <div style={{ flex: 1, fontFamily: "var(--sg)", fontSize: "0.52rem", letterSpacing: "0.08em", textTransform: "uppercase" as const, color: "rgba(250,248,245,0.18)" }}>+ Add new application</div>
-          </div>
-        </div>
-      </div>
-
-      <section className="narrative-section">
-        <div><p className="narrative-sticky">The Observation</p></div>
-        <div className="narrative-body">
-          <p>Job searching in 2024 has become a war of attrition. Most tools encourage the <em>Spray and Pray</em> method &mdash; tracking hundreds of low-quality touches. The middle of the search &mdash; the actual tracking and nurturing of real intent &mdash; is broken.</p>
-          <p className="muted">I built Candor as a counter-position to tools like Teal. While they gamify application count, Candor forces a pause. It&apos;s for the deliberate professional who knows that one meaningful conversation is worth more than fifty automated &ldquo;Easy Apply&rdquo; clicks. Every entry requires you to answer: <em>&ldquo;Why this role?&rdquo;</em></p>
-        </div>
-      </section>
-
-      <section className="bento-section">
-        <div className="bento-grid">
-          <div className="bento-card cream">
-            <div className="bento-icon">
-              <svg viewBox="0 0 36 36" fill="none"><rect x="4" y="6" width="28" height="24" stroke="var(--charcoal)" strokeWidth="1.5" /><line x1="4" y1="14" x2="32" y2="14" stroke="var(--charcoal)" strokeWidth="1" /><line x1="12" y1="6" x2="12" y2="30" stroke="var(--charcoal)" strokeWidth="0.75" /></svg>
-            </div>
-            <div>
-              <h3 className="bento-card-title">&ldquo;Why this role?&rdquo;</h3>
-              <p className="bento-card-body">A required field for every entry. If you can&apos;t articulate why in two sentences, it&apos;s probably not the right role. Forces clarity before a single word of cover letter is written.</p>
-            </div>
-          </div>
-          <div className="bento-card terracotta">
-            <div className="bento-icon">
-              <svg viewBox="0 0 36 36" fill="none"><polyline points="4,28 12,18 18,22 26,10 32,14" stroke="white" strokeWidth="1.5" /><circle cx="32" cy="14" r="2" fill="white" /></svg>
-            </div>
-            <div>
-              <h3 className="bento-card-title">Personalisation Scores</h3>
-              <p className="bento-card-body">An algorithmic nudge that weights roles based on cultural alignment and skill-overlap &mdash; not just salary or title. Built using the Claude AI API.</p>
-            </div>
-          </div>
-          <div className="bento-card high">
-            <div className="bento-icon">
-              <svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="12" stroke="var(--charcoal)" strokeWidth="1.5" /><circle cx="18" cy="18" r="6" stroke="var(--charcoal)" strokeWidth="1" /><circle cx="18" cy="18" r="2" fill="var(--charcoal)" /></svg>
-            </div>
-            <div>
-              <h3 className="bento-card-title">&ldquo;My Story&rdquo; Profile</h3>
-              <p className="bento-card-body">Beyond the resume. A dedicated space for personal narratives linking past experiences to future goals &mdash; fed into the AI audit as context.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="build-section">
-        <div><p className="narrative-sticky">The Build</p></div>
-        <div className="build-body">
-          <h3 className="build-heading">Building with AI as a Peer</h3>
-          <p>This project was a deep dive into the <em>Claude + Cursor</em> workflow &mdash; treating the LLM not as a code generator, but as a technical architect. The first three hours were spent debating Supabase schema design and Row Level Security policies before a single line of React was written.</p>
-          <p>The biggest challenge was state management for the &ldquo;Why this role?&rdquo; modal &mdash; ensuring zero latency between the user&apos;s reflection and the database save. Solved using optimistic UI updates in Next.js 14, making every intention feel instantaneous. Cypress was used throughout for automated regression testing.</p>
-          <div className="divider" />
-          <div className="build-two-col">
-            <div>
-              <h4>Problem Solved</h4>
-              <p>&ldquo;Decoupling the &lsquo;Application&rsquo; from the &lsquo;Intent&rsquo;. Most databases lock these together &mdash; I built a schema that allows you to track intent before an application even exists.&rdquo;</p>
-            </div>
-            <div>
-              <h4>Lesson Learned</h4>
-              <p>&ldquo;The speed of thought is the primary UX metric. If the tool feels slower than your brain, you&apos;ll stop using it. Performance is a feature, not a polish.&rdquo;</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="roadmap-section">
-        <div className="roadmap-block">
-          <div><p className="roadmap-label">Roadmap</p></div>
-          <ul className="roadmap-items">
-            <li className="roadmap-item"><span className="roadmap-check">✓</span><div><p className="roadmap-item-title">Shipped: Intentional Submission Engine</p><p className="roadmap-item-sub">Core tracker with mandatory reflection blocks and Supabase persistence.</p></div></li>
-            <li className="roadmap-item"><span className="roadmap-check">✓</span><div><p className="roadmap-item-title">Shipped: Supabase Auth &amp; Multi-tenant Isolation</p><p className="roadmap-item-sub">Secure per-user data with Row Level Security policies.</p></div></li>
-            <li className="roadmap-item"><span className="roadmap-pending">◷</span><div><p className="roadmap-item-title">Next: AI-Powered &ldquo;Personalisation Audit&rdquo;</p><p className="roadmap-item-sub">Using Claude to score your CV against the job description, grounded in your &ldquo;My Story&rdquo; profile.</p></div></li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="next-project" onClick={onNext}>
-        <p className="next-project-label">Next Project</p>
-        <p className="next-project-name">PROVENANCE</p>
-      </div>
-      <Footer />
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   PROJECT: PROVENANCE
-   ═══════════════════════════════════════════════════════ */
-function ProvenancePage({ onBack, onNext }: { onBack: () => void; onNext: () => void }) {
-  return (
-    <div>
-      <div className="project-hero">
-        <div style={{ display: "flex", alignItems: "center", gap: "1rem", marginBottom: "1.5rem" }}>
-          <span className="project-badge" style={{ color: "var(--olive)", borderColor: "var(--olive)" }}>Coming Soon</span>
-          <span className="project-year">2025</span>
-        </div>
-        <div className="project-grid">
-          <div>
-            <h1 className="project-title fade-up" style={{ fontSize: "clamp(2.8rem,7.5vw,6.5rem)" }}>PROVENANCE</h1>
-            <p className="project-tagline fade-up delay-1">&ldquo;The marketplace where you know exactly what you&apos;re paying for.&rdquo;</p>
-          </div>
-          <div className="project-meta fade-up delay-2">
-            <p className="project-meta-label">Tech Stack</p>
-            <p className="project-meta-value">React.js, Tailwind, Claude</p>
-            <p className="project-meta-label">Focus</p>
-            <p className="project-meta-value">UX/UI, Transparency, FinTech</p>
-          </div>
-        </div>
-      </div>
-
-      <div style={{ maxWidth: 1440, margin: "0 auto", padding: "0 3rem 5rem" }}>
-        <div style={{ aspectRatio: "21/9", background: "#d9d5ce", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 12 }}>
-          <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
-            <ellipse cx="60" cy="45" rx="28" ry="34" stroke="rgba(44,44,42,0.18)" strokeWidth="1" />
-            <ellipse cx="60" cy="88" rx="40" ry="9" stroke="rgba(44,44,42,0.12)" strokeWidth="1" />
-            <line x1="32" y1="45" x2="20" y2="88" stroke="rgba(44,44,42,0.1)" />
-            <line x1="88" y1="45" x2="100" y2="88" stroke="rgba(44,44,42,0.1)" />
-            <ellipse cx="60" cy="45" rx="12" ry="16" stroke="rgba(44,44,42,0.08)" strokeWidth="0.75" />
-          </svg>
-          <p style={{ fontFamily: "var(--nr)", fontStyle: "italic", fontSize: "0.7rem", color: "rgba(44,44,42,0.3)", letterSpacing: "0.04em" }}>Photography of Australian Ceramics / Place II</p>
-        </div>
-      </div>
-
-      <section style={{ maxWidth: 1440, margin: "0 auto", padding: "0 3rem 6rem", display: "grid", gridTemplateColumns: "4fr 7fr", gap: "4rem", columnGap: "6rem" }}>
-        <div>
-          <p className="section-label">01 / The Insight</p>
-          <h3 style={{ fontFamily: "var(--sg)", fontWeight: 700, fontSize: "1.4rem", letterSpacing: "-0.02em", lineHeight: 1.2 }}>The Friction<br />of Fairness.</h3>
-        </div>
-        <div>
-          <p style={{ fontSize: "1.02rem", lineHeight: 1.72, marginBottom: "1.75rem" }}>
-            The biggest barrier to purchasing high-end handmade goods isn&apos;t the price &mdash; it&apos;s the lack of context. In a world of mass-market dropshipping masquerading as &lsquo;handmade&rsquo; on platforms like Etsy, consumers have lost their price-value compass. The &lsquo;expensive&rsquo; just looks expensive, without explanation.
-          </p>
-        </div>
-      </section>
-
-      <section style={{ maxWidth: 1440, margin: "0 auto", padding: "0 0 5rem" }}>
-        <div className="solution-bento">
-          <div className="solution-main">
-            <div style={{ fontFamily: "var(--sg)", fontSize: "0.6rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--muted)", marginBottom: "0.75rem" }}>02 / The Solution</div>
-            <h3 style={{ fontFamily: "var(--sg)", fontWeight: 700, fontSize: "1rem", textTransform: "uppercase", letterSpacing: "0.04em", marginBottom: "0.65rem" }}>Mandatory Price Breakdowns</h3>
-            <p style={{ fontSize: "0.88rem", lineHeight: 1.6, color: "var(--muted)", marginBottom: "1.5rem" }}>Every listing requires a verifiable breakdown. This shifts the narrative from &ldquo;Why is this expensive?&rdquo; to &ldquo;This is what quality costs.&rdquo;</p>
-            <div className="mandate-list">
-              {[
-                { label: "Materials (Stoneware)", value: "$22.50" },
-                { label: "Kiln Firing (3 Hours)", value: "$12.50" },
-                { label: "Artisan Labour (4 hrs)", value: "$48.00" },
-              ].map((r, i) => (
-                <div key={i} className="mandate-row"><span className="mandate-label">{r.label}</span><span className="mandate-value">{r.value}</span></div>
-              ))}
-              <div className="mandate-row" style={{ borderBottom: "none" }}><span className="mandate-label" style={{ fontWeight: 600, color: "var(--charcoal)" }}>Total</span><span className="mandate-value" style={{ color: "var(--terracotta)" }}>$83.00</span></div>
-            </div>
-          </div>
-          <div className="solution-right">
-            <div className="solution-right-top">
-              <svg width="30" height="30" viewBox="0 0 30 30" fill="none" style={{ marginBottom: "auto", display: "block" }}><circle cx="15" cy="15" r="11" stroke="rgba(250,248,245,0.65)" strokeWidth="1.5" /><path d="M9 15l4 4 8-8" stroke="rgba(250,248,245,0.85)" strokeWidth="1.5" /></svg>
-              <div style={{ marginTop: "2.5rem" }}><div className="bento-card-title">Handmade Verification</div><p className="bento-card-body" style={{ fontSize: "0.85rem" }}>Rigorous certification for Australian makers. No reselling, no bulk factory imports. Ever.</p></div>
-            </div>
-            <div className="solution-right-bottom">
-              <svg width="30" height="30" viewBox="0 0 30 30" fill="none" style={{ marginBottom: "auto", display: "block" }}><path d="M7 26L15 4L23 26" stroke="rgba(250,248,245,0.7)" strokeWidth="1.5" /><circle cx="15" cy="4" r="2.5" fill="rgba(250,248,245,0.5)" /></svg>
-              <div style={{ marginTop: "2.5rem" }}><div className="bento-card-title">Australia First</div><p className="bento-card-body" style={{ fontSize: "0.85rem" }}>Initial focus on Victorian and NSW ceramic and jewellery makers.</p></div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section style={{ maxWidth: 1440, margin: "0 auto", padding: "0 3rem 5rem" }}>
-        <p className="section-label" style={{ marginBottom: "2.5rem" }}>04 / The Roadmap</p>
-        <div className="prov-roadmap-grid">
-          {[
-            { num: "01", title: "UX Design & Discovery", sub: "Refining the taxonomy of material costs and interviewing local makers in Melbourne and Sydney." },
-            { num: "02", title: "Alpha Testing", sub: "Closed beta with 30 select ceramicists to test the breakdown transparency module and seller onboarding." },
-            { num: "03", title: "Marketplace Launch", sub: "Full public rollout of the buyer marketplace across Australia." },
-          ].map((r, i) => (
-            <div key={i}>
-              <div className="prov-roadmap-num">{r.num}</div>
-              <div className="prov-roadmap-title">{r.title}</div>
-              <p className="prov-roadmap-sub">{r.sub}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <div className="next-project" onClick={onNext}>
-        <p className="next-project-label">Next Project</p>
-        <p className="next-project-name">CANDOR</p>
-      </div>
-      <Footer />
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   RESUME MODAL
-   ═══════════════════════════════════════════════════════ */
-function ResumeModal({ open, onClose }: { open: boolean; onClose: () => void }) {
-  if (!open) return null;
-  return (
-    <div className="resume-overlay open" onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className="resume-modal">
-        <div className="resume-modal-header">
-          <span className="resume-modal-title">Resume</span>
-          <button className="resume-close" onClick={onClose}>&times;</button>
-        </div>
-        <iframe src="/resume.pdf" title="Resume" />
-      </div>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   YOUTUBE MODAL
-   ═══════════════════════════════════════════════════════ */
-function YouTubeModal({ videoId, onClose }: { videoId: string | null; onClose: () => void }) {
-  if (!videoId) return null;
-  return (
-    <div style={{ position: "fixed", inset: 0, background: "rgba(44,44,42,0.9)", zIndex: 500, display: "flex", alignItems: "center", justifyContent: "center" }} onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div style={{ width: "90vw", maxWidth: 800, aspectRatio: "16/9" }}>
-        <iframe
-          src={`https://www.youtube.com/embed/${videoId}?autoplay=1`}
-          style={{ width: "100%", height: "100%", border: "none" }}
-          allow="autoplay; encrypted-media"
-          allowFullScreen
-          title="Video"
-        />
-      </div>
-    </div>
-  );
-}
-
-/* ═══════════════════════════════════════════════════════
-   MAIN APP
-   ═══════════════════════════════════════════════════════ */
 export default function Home() {
-  const [page, setPage] = useState<"home" | "candor" | "provenance">("home");
+  const [page, setPage] = useState<Page>("home");
+  const [typed, setTyped] = useState(lines[0]);
   const [resumeOpen, setResumeOpen] = useState(false);
-  const [ytId, setYtId] = useState<string | null>(null);
+  const [playing, setPlaying] = useState(false);
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [audioError, setAudioError] = useState("");
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
 
-  const showPage = (p: "home" | "candor" | "provenance") => {
-    setPage(p);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+  function go(next: Page) {
+    setPage(next);
+    if (location.hash !== "#" + next) history.pushState(null,"","#"+next);
+    window.scrollTo(0,0);
+  }
 
-  const navigateTo = (id: string) => {
-    if (page !== "home") setPage("home");
-    setTimeout(() => {
-      document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
-    }, page !== "home" ? 100 : 0);
-  };
+  useEffect(() => {
+    const fromHash = () => { const hash=location.hash.slice(1); setPage(isPage(hash) ? hash : "home"); window.scrollTo(0,0); };
+    fromHash(); window.addEventListener("hashchange",fromHash); window.addEventListener("popstate",fromHash);
+    return () => { window.removeEventListener("hashchange",fromHash); window.removeEventListener("popstate",fromHash); };
+  }, []);
 
-  return (
-    <>
-      <Nav onNavigate={navigateTo} onResume={() => setResumeOpen(true)} />
+  useEffect(() => {
+    const elements=document.querySelectorAll(".page.on .rv");
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) { elements.forEach(el=>el.classList.add("in")); return; }
+    const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("in");observer.unobserve(entry.target);}}),{threshold:.08});
+    elements.forEach(el=>observer.observe(el));
+    return () => observer.disconnect();
+  }, [page]);
 
-      {page === "home" && (
-        <div>
-          <Hero />
-          <About />
-          <SkillsStrip />
-          <Works onProject={(id) => showPage(id as "candor" | "provenance")} />
-          <Experience onYT={(id) => setYtId(id)} />
-          <MusicSection />
-          <ContactCTA />
-          <Footer />
-        </div>
-      )}
+  useEffect(() => {
+    const media=window.matchMedia("(prefers-reduced-motion: reduce)");
+    let timer: ReturnType<typeof setTimeout>;
+    let line=0, index=lines[0].length, deleting=true;
+    function tick() {
+      if(media.matches) { setTyped(lines[0]); return; }
+      const full=lines[line];
+      index+=deleting?-1:1;
+      setTyped(full.slice(0,index));
+      let delay=deleting?42:78;
+      if(!deleting && index===full.length){deleting=true;delay=1700;}
+      else if(deleting && index===0){deleting=false;line=(line+1)%lines.length;delay=280;}
+      timer=setTimeout(tick,delay);
+    }
+    function restart(){clearTimeout(timer);line=0;index=lines[0].length;deleting=true;setTyped(lines[0]);if(!media.matches)timer=setTimeout(tick,1700);}
+    restart();media.addEventListener("change",restart);
+    return () => { clearTimeout(timer);media.removeEventListener("change",restart); };
+  }, []);
 
-      {page === "candor" && (
-        <CandorPage onBack={() => showPage("home")} onNext={() => showPage("provenance")} />
-      )}
+  useEffect(() => {
+    if(!resumeOpen) return;
+    const previous=document.activeElement as HTMLElement | null;
+    const overflow=document.body.style.overflow;
+    document.body.style.overflow="hidden";
+    modalRef.current?.querySelector<HTMLButtonElement>("button")?.focus();
+    function onKey(event: KeyboardEvent) {
+      if(event.key==="Escape")setResumeOpen(false);
+      if(event.key!=="Tab")return;
+      const items=modalRef.current?.querySelectorAll<HTMLElement>("button, a, iframe");
+      if(!items?.length)return;
+      const first=items[0],last=items[items.length-1];
+      if(event.shiftKey && document.activeElement===first){event.preventDefault();last.focus();}
+      else if(!event.shiftKey && document.activeElement===last){event.preventDefault();first.focus();}
+    }
+    document.addEventListener("keydown",onKey);
+    return () => { document.body.style.overflow=overflow;document.removeEventListener("keydown",onKey);previous?.focus(); };
+  }, [resumeOpen]);
 
-      {page === "provenance" && (
-        <ProvenancePage onBack={() => showPage("home")} onNext={() => showPage("candor")} />
-      )}
+  async function toggleAudio() {
+    const audio=audioRef.current; if(!audio)return;
+    if(!audio.paused){audio.pause();setPlaying(false);return;}
+    try { await audio.play();setPlaying(true);setAudioError(""); }
+    catch {setPlaying(false);setAudioError("Playback could not start. Please try again.");}
+  }
 
-      <ResumeModal open={resumeOpen} onClose={() => setResumeOpen(false)} />
-      <YouTubeModal videoId={ytId} onClose={() => setYtId(null)} />
-    </>
-  );
+  return (<>
+
+<nav>
+<div className="nav-in">
+<button className={"nav-btn" + (page === "home" ? " on" : "")} aria-current={page === "home" ? "page" : undefined} id="n-home" onClick={() => go('home')} aria-label="Home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M3 10.5 12 3l9 7.5"></path><path d="M5 9.5V21h14V9.5"></path><path d="M9.5 21v-6h5v6"></path></svg></button>
+<button className={"nav-btn" + (page === "about" ? " on" : "")} aria-current={page === "about" ? "page" : undefined} id="n-about" onClick={() => go('about')} aria-label="About"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"></circle><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"></path></svg></button>
+<button className={"nav-btn" + (page === "resume" ? " on" : "")} aria-current={page === "resume" ? "page" : undefined} id="n-resume" onClick={() => go('resume')} aria-label="Resume"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"></path><path d="M14 3v5h5"></path><path d="M9 13h6M9 17h4"></path></svg></button>
+<button className={"nav-btn" + (page === "projects" ? " on" : "")} aria-current={page === "projects" ? "page" : undefined} id="n-projects" onClick={() => go('projects')} aria-label="Projects"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2.5h8a2 2 0 0 1 2 2V18a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg></button>
+<button className={"nav-btn" + (page === "music" ? " on" : "")} aria-current={page === "music" ? "page" : undefined} id="n-music" onClick={() => go('music')} aria-label="Music"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18V6l11-2v12"></path><circle cx="6" cy="18" r="3"></circle><circle cx="17" cy="16" r="3"></circle></svg></button>
+<button className={"nav-btn" + (page === "contact" ? " on" : "")} aria-current={page === "contact" ? "page" : undefined} id="n-contact" onClick={() => go('contact')} aria-label="Contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10.5c0 5.5-8 12-8 12s-8-6.5-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10.5" r="3"></circle></svg></button>
+</div>
+</nav>
+
+<section className={"page" + (page === "home" ? " on" : "")} id="p-home" aria-hidden={page !== "home"}>
+<div className="hero">
+<div className="hero-txt">
+<p className="hi">{"Hi, I'm"}</p>
+<h1 className="big-name">{"Matthew"}</h1>
+<p className="tw">{"I'm "}<b id="twtext">{typed}</b><span className="caret"></span></p>
+<div className="socials"><a href="https://www.instagram.com/mhuehne/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5.5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"></circle></svg></a><a href="https://www.linkedin.com/in/matthewhuehne/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 448 512" fill="currentColor"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"></path></svg></a><a href="https://github.com/Huehnematthew8" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg viewBox="0 0 496 512" fill="currentColor"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg></a></div>
+</div>
+<div className="avatar"><img src="/portfolio-assets/matthew-huehne-d83022e4b3.jpg" alt="Matthew Huehne" /></div>
+</div>
+</section>
+
+<section className={"page" + (page === "about" ? " on" : "")} id="p-about" aria-hidden={page !== "about"}>
+<h1 className="ptitle rv">{"About Me"}</h1>
+<div className="tl">
+<div className="tl-row"><div className="tl-card rv">
+<div className="tl-head"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path><path d="M3 12h18"></path></svg><h3>{"Consultant"}</h3></div>
+<p>{"Consultant in Deloitte’s Engineering, AI and Data practice, working on cloud and infrastructure programmes. My work includes discovery interviews, financial modelling and recommendations for leadership."}</p>
+</div></div>
+<div className="tl-row"><div className="tl-card rv">
+<div className="tl-head"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeLinecap="round" strokeLinejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><path d="m3.3 7 8.7 5 8.7-5"></path><path d="M12 22V12"></path><path d="m7.5 4.3 9 5.1"></path></svg><h3>{"Side Projects"}</h3></div>
+<p>{"I’m currently building Candor, a personal job-search app, and this portfolio. I’ll share more about both as they develop."}</p>
+</div></div>
+<div className="tl-row"><div className="tl-card rv">
+<div className="tl-head"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" strokeLinecap="round" strokeLinejoin="round"><path d="M7 4h10v6a5 5 0 0 1-10 0z"></path><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"></path><path d="M10 15h4M9 20h6M12 15v5"></path></svg><h3>{"Competitor"}</h3></div>
+<p>{"Represented QUT in case competitions in Los Angeles, Bangkok and Melbourne in 2025. Second overall at Marshall, third in division at Chulalongkorn and a national finalist at L’Oréal Brandstorm."}</p>
+</div></div>
+<div className="tl-row"><div className="tl-card rv">
+<div className="tl-head"><svg viewBox="0 0 24 24" fill="none" stroke="var(--purple)" strokeLinecap="round" strokeLinejoin="round"><path d="M9 18V6l11-2v12"></path><circle cx="6" cy="18" r="3"></circle><circle cx="17" cy="16" r="3"></circle></svg><h3>{"Musician"}</h3></div>
+<p>{"Producing in Ableton and slowly getting better at guitar. One track finished start to end so far, which is one more than this time last year."}</p>
+</div></div>
+<div className="tl-row"><div className="tl-card rv">
+<div className="tl-head"><svg viewBox="0 0 24 24" fill="none" stroke="var(--teal)" strokeLinecap="round" strokeLinejoin="round"><path d="m8 17-5-5 5-5"></path><path d="m16 7 5 5-5 5"></path></svg><h3>{"Technologist"}</h3></div>
+<p>{"Python, SQL, AWS, Next.js and Supabase. A finance and computer science degree, then a habit of building the tools I wanted to use rather than waiting for them."}</p>
+</div></div>
+<div className="tl-row"><div className="tl-card rv">
+<div className="tl-head"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeLinecap="round" strokeLinejoin="round"><path d="M12 19V3l7 3.5-7 3.5"></path><circle cx="8" cy="19" r="2.5"></circle><path d="M12 19h-1.5"></path></svg><h3>{"Golfer"}</h3></div>
+<p>{"Out on the course most weekends I can manage it. Still chasing a handicap I would be willing to publish on a website."}</p>
+</div></div>
+<div className="tl-row"><div className="tl-card rv">
+<div className="tl-head"><svg viewBox="0 0 24 24" fill="none" stroke="var(--pink)" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12h4l3-8 4 16 3-8h4"></path></svg><h3>{"Runner"}</h3></div>
+<p>{"Running and the gym are the two things that reliably clear my head. Neither started because I enjoyed them, which is the whole reason I trust them now."}</p>
+</div></div>
+<div className="tl-row"><div className="tl-card rv">
+<div className="tl-head"><svg viewBox="0 0 24 24" fill="none" stroke="var(--indigo)" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="5.5" r="2.5"></circle><path d="M10 8.5c0 2.5-1 3.5-1 5.5s.8 3 .5 5h5c-.3-2 .2-3.2.5-5s-1-3-1-5.5"></path><path d="M7 19h10"></path></svg><h3>{"Chess Player"}</h3></div>
+<p>{"Rated around 1500 on chess.com and still grinding. Mostly rapid, mostly losing to people who saw it three moves earlier than I did."}</p>
+</div></div>
+</div>
+</section>
+
+<section className={"page" + (page === "resume" ? " on" : "")} id="p-resume" aria-hidden={page !== "resume"}>
+<h1 className="ptitle rv">{"Resume"}</h1>
+<div className="rsec rv">
+<div className="rsec-h"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" strokeLinecap="round" strokeLinejoin="round"><path d="M22 9 12 4 2 9l10 5z"></path><path d="M6 11.5V17c0 1.7 2.7 3 6 3s6-1.3 6-3v-5.5"></path></svg><h2>{"Education"}</h2></div>
+<div className="rcard">
+<div className="rtop"><div>
+<div className="rtitle">{"Queensland University of Technology"}</div>
+<div className="rorg">{"Bachelor of Business (Finance) and Bachelor of Information Technology (Computer Science)"}</div>
+<div className="rdate">{"Brisbane, 2021 to February 2026, course completed"}</div>
+</div></div>
+</div>
+</div>
+<div className="rsec rv">
+<div className="rsec-h"><svg viewBox="0 0 24 24" fill="none" stroke="var(--purple)" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="9" r="6"></circle><path d="M8.5 14.5 7 22l5-2.5L17 22l-1.5-7.5"></path></svg><h2>{"Certifications"}</h2></div>
+<div className="rcard">
+<div className="certrow">
+<div>
+<div className="rtitle">{"Claude Certified Associate, Foundations (CCAO-F)"}</div>
+<div className="rorg">{"Anthropic"}</div>
+<div className="rdate">{"Issued August 2026"}</div>
+</div>
+<a className="verify" href="https://www.credly.com/badges/5a223e9c-e609-451a-a0bb-ba3ca48d3da9/public_url" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M14 4h6v6"></path><path d="M20 4 11 13"></path><path d="M18 14v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>{"Verify"}</a>
+</div>
+</div>
+<div className="rcard">
+<div className="certrow">
+<div>
+<div className="rtitle">{"Microsoft Certified: Azure AI Fundamentals (AI-900)"}</div>
+<div className="rorg">{"Microsoft"}</div>
+<div className="rdate">{"Issued May 2026"}</div>
+</div>
+<a className="verify" href="https://learn.microsoft.com/api/credentials/share/en-us/HuehneMatthew-7110/2717CB632F905F9B" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M14 4h6v6"></path><path d="M20 4 11 13"></path><path d="M18 14v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>{"Verify"}</a>
+</div>
+</div>
+<div className="rcard">
+<div className="certrow">
+<div>
+<div className="rtitle">{"AWS Certified Cloud Practitioner (CLF-C02)"}</div>
+<div className="rorg">{"Amazon Web Services"}</div>
+<div className="rdate">{"Issued September 2025"}</div>
+</div>
+<a className="verify" href="https://www.credly.com/badges/9dd3fa58-8768-48c9-97ed-b87801f5950d/linked_in_profile" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M14 4h6v6"></path><path d="M20 4 11 13"></path><path d="M18 14v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>{"Verify"}</a>
+</div>
+</div>
+<div className="rcard">
+<div className="certrow">
+<div>
+<div className="rtitle">{"STEM Connect Virtual Experience Program"}</div>
+<div className="rorg">{"Deloitte"}</div>
+<div className="rdate">{"Issued December 2022"}</div>
+</div>
+<a className="verify" href="https://forage-uploads-prod.s3.amazonaws.com/completion-certificates/Deloitte%20Australia/YPWCiGNTkr6QxcpEu_Deloitte%20Australia_rbkd4BxBjHPY42bxn_1670661040571_completion_certificate.pdf" target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M14 4h6v6"></path><path d="M20 4 11 13"></path><path d="M18 14v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h5"></path></svg>{"Verify"}</a>
+</div>
+</div>
+</div>
+
+
+<div className="rsec rv">
+<div className="rsec-h"><svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"></rect><path d="M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"></path></svg><h2>{"Experience"}</h2></div>
+<div className="rcard">
+<div className="rtop">
+<img className="rlogo" src="/portfolio-assets/deloitte-5eb9a871ab.png" alt="Deloitte" />
+<div><div className="rtitle">{"Consultant, Engineering, AI and Data"}</div>
+<div className="rorg">{"Deloitte"}</div><div className="rdate">{"Consultant: August 2026 to present · Analyst: July 2025 to August 2026"}</div></div>
+</div>
+<ul>
+<li>{"Developed the initial AWS pricing model structure for an internal migration assessment covering more than 200 applications. Reconciled inventory data and server core counts."}</li>
+<li>{"Coordinated 40+ interviews across time zones, documented findings and managed follow-ups. Built application tracking and Jira structures across 12 work packages."}</li>
+<li>{"Consolidated 400+ workshop initiatives into 103 for a major bank and helped build their three-year costing model. Supported roadmap sequencing and produced visualisations for executive review."}</li>
+<li>{"Co-led a separate internal platform assessment that changed the recommendation from replacing six modules to one capability after discovery showed only one was meaningfully used."}</li>
+</ul>
+</div>
+<div className="rcard">
+<div className="rtop">
+<img className="rlogo" src="/portfolio-assets/ey-67f34aee4a.png" alt="EY" />
+<div><div className="rtitle">{"Technology Strategy and Transformation Intern"}</div>
+<div className="rorg">{"Ernst & Young"}</div><div className="rdate">{"January 2025 to February 2025"}</div></div>
+</div>
+<ul><li>{"Wrote and refined bid content for government technology projects, matching each response to what the buyer had actually asked for in the tender."}</li></ul>
+</div>
+<div className="rcard">
+<div className="rtop">
+<img className="rlogo" src="/portfolio-assets/moonward-apps-4b6660f48b.png" alt="Moonward Apps" />
+<div><div className="rtitle">{"Quality Assurance Tester"}</div>
+<div className="rorg">{"Moonward Apps"}</div><div className="rdate">{"June 2024 to January 2025"}</div></div>
+</div>
+<ul><li>{"Joined as a manual tester, taught myself Cypress in my own time and automated the regression suite the team had been running by hand. Worked with developers, project managers and clients."}</li></ul>
+</div>
+<div className="rcard">
+<div className="rtop">
+<img className="rlogo" src="/portfolio-assets/deloitte-5eb9a871ab.png" alt="Deloitte" />
+<div><div className="rtitle">{"Intern, Cloud and Engineering Advisory · Technology Strategy and Transformation"}</div>
+<div className="rorg">{"Deloitte"}</div><div className="rdate">{"November 2023 to February 2024"}</div></div>
+</div>
+<ul><li>{"Turned client interviews and workshop notes into technology roadmaps and service models, and iterated the technology radar visualisations against stakeholder feedback."}</li></ul>
+</div>
+<div className="rcard">
+<div className="rtop">
+<img className="rlogo" src="/portfolio-assets/180-degrees-consulting-6e4f5b127a.png" alt="180 Degrees Consulting" />
+<div><div className="rtitle">{"Consultant, then Consulting Director, then Treasurer"}</div>
+<div className="rorg">{"180 Degrees Consulting QUT"}</div><div className="rdate">{"February to November 2023; February to November 2024"}</div></div>
+</div>
+<ul>
+<li>{"Led five consultants on a hiring guide for a veteran-employment charity, mentored by KPMG."}</li>
+<li>{"Recommended software for a 250 member transport organisation and presented the case to their executive team."}</li>
+</ul>
+</div>
+<div className="rcard">
+<div className="rtop">
+<img className="rlogo" src="/portfolio-assets/paedix-33ba92c875.png" alt="Paedix" />
+<div><div className="rtitle">{"Digital Marketing and Data Intern"}</div>
+<div className="rorg">{"Paedix Paediatrics"}</div><div className="rdate">{"March 2023 to October 2023"}</div></div>
+</div>
+<ul><li>{"Developed a database of medical practitioners using Python and automated email and fax outreach."}</li></ul>
+</div>
+<div className="rcard">
+<div className="rtop">
+<img className="rlogo" src="/portfolio-assets/code-camp-41cc260802.png" alt="Code Camp" />
+<div><div className="rtitle">{"Head Teacher"}</div>
+<div className="rorg">{"Code Camp"}</div><div className="rdate">{"December 2021 to October 2023"}</div></div>
+</div>
+<ul><li>{"Taught coding and computational thinking to primary school students."}</li></ul>
+</div>
+<div className="rcard">
+<div className="rtop">
+<img className="rlogo" src="/portfolio-assets/lifeshape-clinic-a57a8ad30d.png" alt="LifeShape Clinic" />
+<div><div className="rtitle">{"Client Services Representative"}</div>
+<div className="rorg">{"LifeShape Clinic"}</div><div className="rdate">{"February 2022 to September 2023"}</div></div>
+</div>
+<ul><li>{"Handled enquiries, appointments and records at a clinic while studying full time."}</li></ul>
+</div>
+</div>
+<div className="rsec rv">
+<div className="rsec-h"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" strokeLinecap="round" strokeLinejoin="round"><path d="M7 4h10v6a5 5 0 0 1-10 0z"></path><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"></path><path d="M10 15h4M9 20h6M12 15v5"></path></svg><h2>{"Case Competitions"}</h2></div>
+<div className="rcard">
+<div className="rtop"><div><div className="rtitle">{"2nd place, Marshall International Case Competition"}</div>
+<div className="rorg">{"University of Southern California, Los Angeles"}</div><div className="rdate">{"February 2025"}</div></div></div>
+<div className="rmeta">{"Represented QUT against 20 international universities. Built the budget allocation and three-year revenue model for our proposed sports-media content series. Helped write the marketing and go-to-market strategy for our proposed wealth platform."}</div>
+</div>
+<div className="rcard">
+<div className="rtop"><div><div className="rtitle">{"3rd in division, Chulalongkorn International Business Case Competition"}</div>
+<div className="rorg">{"Chulalongkorn Business School, Bangkok"}</div><div className="rdate">{"May 2025"}</div></div></div>
+<div className="rmeta">{"Mainly handled go-to-market strategy across team proposals for a hospital group and a paint manufacturer, in eight-hour and twenty-four-hour cases."}</div>
+</div>
+<div className="rcard">
+<div className="rtop"><div><div className="rtitle">{"National finalist, L'Oreal Brandstorm Australia and New Zealand"}</div>
+<div className="rorg">{"L'Oreal, Melbourne"}</div><div className="rdate">{"May 2025"}</div></div></div>
+<div className="rmeta">{"One of five finalist teams from 155 submissions. I originated HairPress, a styling-device concept for men with thick, outward-growing hair. Presented our financial model and go-to-market proposal to five L’Oréal ANZ executives, including the CEO, and defended it in Q&A."}</div>
+</div>
+</div>
+<div className="rsec rv" style={{"textAlign": "center", "paddingBottom": "4rem"}}>
+<button className="dl" onClick={() => setResumeOpen(true)}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3v12"></path><path d="m7 11 5 5 5-5"></path><path d="M5 21h14"></path></svg>{"View full resume"}</button>
+</div>
+</section>
+
+<section className={"page" + (page === "projects" ? " on" : "")} id="p-projects" aria-hidden={page !== "projects"}>
+<h1 className="ptitle rv">{"Projects"}</h1>
+<p className="plead rv">{"What I’m working on. More details to come."}</p>
+<div className="pgrid">
+<article className="pcard rv">
+<div className="pshot project-preview"><img src="/portfolio-assets/candor-role-tracking-interface-with-sample-roles-46b3ddfb8f.png" alt="Candor role-tracking interface with sample roles" loading="lazy" /></div>
+<div className="pbody">
+<div className="ptag build">{"In progress"}</div>
+<h2 className="pname">{"Candor"}</h2>
+<p className="pdesc">{"A personal job-search app for tracking roles, contacts and next steps, with a master résumé and story bank."}</p>
+<p style={{"marginTop": "1rem", "color": "var(--muted)", "fontSize": ".88rem"}}>{"Interface preview with sample data. Write-up coming soon."}</p>
+</div>
+</article>
+<article className="pcard rv">
+<div className="pshot project-preview"><img src="/portfolio-assets/personal-portfolio-homepage-with-introduction-and-portrait-91ec3d51b4.png" alt="Personal portfolio homepage with introduction and portrait" loading="lazy" /></div>
+<div className="pbody">
+<div className="ptag build">{"In progress"}</div>
+<h2 className="pname">{"Personal portfolio"}</h2>
+<p className="pdesc">{"This website: a place for my background, experience, projects and music."}</p>
+<p style={{"marginTop": "1rem", "color": "var(--muted)", "fontSize": ".88rem"}}>{"Project write-up coming soon."}</p>
+</div>
+</article>
+</div>
+</section>
+
+<section className={"page" + (page === "music" ? " on" : "")} id="p-music" aria-hidden={page !== "music"}>
+<h1 className="ptitle rv">{"Music"}</h1>
+<div className="mus">
+<p className="rv">{"I produce in Ableton and I am slowly getting better at guitar. It started as something to do that had nothing to do with work, and it has stayed that way, which is probably why I have kept at it."}</p>
+<p className="rv"><b>{"Alone with You"}</b>{" is the first track I finished start to end. It is not going to trouble the charts, but every part of it is mine, which was the point. Working on the next one."}</p>
+<div className="player rv">
+<div className="pl-top">
+<button className="pl-play" onClick={toggleAudio} aria-label={playing ? "Pause music" : "Play music"} aria-pressed={playing}>
+<svg id="ic-play" viewBox="0 0 24 24" style={{display: playing ? "none" : undefined}}><polygon points="6,4 20,12 6,20"></polygon></svg>
+<svg id="ic-pause" viewBox="0 0 24 24" style={{...{},display: playing ? undefined : "none"}}><rect x="6" y="4" width="4" height="16"></rect><rect x="14" y="4" width="4" height="16"></rect></svg>
+</button>
+<div><div className="pl-name">{"Alone with You"}</div><div className="pl-by">{"Matthew Huehne"}</div></div>
+</div>
+<div className="wave" id="wave" aria-hidden="true">{Array.from({length:64}, (_, i) => <span key={i} className={i < (duration ? currentTime / duration * 64 : 0) ? "on" : ""} style={{height: `${22 + Math.abs(Math.sin(i * .7)) * 70}%`}} />)}</div><input className="music-seek" type="range" aria-label="Track position" min={0} max={duration || 1} step={0.1} value={currentTime} onChange={(event) => { const time = Number(event.target.value); if(audioRef.current) audioRef.current.currentTime=time; setCurrentTime(time); }} />{audioError && <p role="status">{audioError}</p>}
+<div className="pl-time"><span id="t-now">{formatTime(currentTime)}</span><span id="t-end">{formatTime(duration)}</span></div>
+<audio id="aud" src="/portfolio-assets/alone-with-you-a61400c9dc.mp3" preload="metadata" ref={audioRef} onLoadedMetadata={(event) => setDuration(event.currentTarget.duration)} onTimeUpdate={(event) => setCurrentTime(event.currentTarget.currentTime)} onEnded={() => setPlaying(false)}></audio>
+</div>
+</div>
+</section>
+
+<section className={"page" + (page === "contact" ? " on" : "")} id="p-contact" aria-hidden={page !== "contact"}>
+<h1 className="ptitle rv">{"Contact"}</h1>
+<div className="ct">
+<div className="divlbl rv">{"Connect with me"}</div>
+<div className="big-socials rv"><a href="https://www.instagram.com/mhuehne/" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5.5"></rect><circle cx="12" cy="12" r="4.2"></circle><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor" stroke="none"></circle></svg></a><a href="https://www.linkedin.com/in/matthewhuehne/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><svg viewBox="0 0 448 512" fill="currentColor"><path d="M100.28 448H7.4V148.9h92.88zM53.79 108.1C24.09 108.1 0 83.5 0 53.8a53.79 53.79 0 0 1 107.58 0c0 29.7-24.1 54.3-53.79 54.3zM447.9 448h-92.68V302.4c0-34.7-.7-79.2-48.29-79.2-48.29 0-55.69 37.7-55.69 76.7V448h-92.78V148.9h89.08v40.8h1.3c12.4-23.5 42.69-48.3 87.88-48.3 94 0 111.28 61.9 111.28 142.3V448z"></path></svg></a><a href="https://github.com/Huehnematthew8" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg viewBox="0 0 496 512" fill="currentColor"><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"></path></svg></a></div>
+<div className="divlbl rv">{"Or send me an email"}</div>
+<a className="mailto rv" href="mailto:huehnematthew8@gmail.com">
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg>
+<span>{"huehnematthew8@gmail.com"}</span>
+</a>
+<p className="rv" style={{"marginTop": "2.5rem", "color": "var(--muted)", "fontSize": ".98rem", "lineHeight": "1.7"}}>{"Based in Brisbane. Australian citizen with full working rights."}</p>
+</div>
+<footer>{"© 2026 Matthew Huehne"}</footer>
+</section>
+
+<div role="dialog" aria-modal="true" aria-label="Full resume" id="ov" style={{...{"position": "fixed", "inset": "0", "background": "rgba(10,10,10,.72)", "zIndex": "500", "alignItems": "center", "justifyContent": "center", "padding": "2rem"}, display: resumeOpen ? "flex" : "none"}} onClick={(event) => { if (event.target === event.currentTarget) setResumeOpen(false); }} ref={modalRef}>
+<div style={{"width": "100%", "maxWidth": "900px", "height": "88vh", "background": "#fff", "borderRadius": "14px", "overflow": "hidden", "display": "flex", "flexDirection": "column"}}>
+<div style={{"display": "flex", "justifyContent": "space-between", "alignItems": "center", "padding": ".9rem 1.2rem", "borderBottom": "1px solid var(--line)"}}>
+<strong style={{"fontSize": ".95rem"}}>{"Matthew Huehne, resume"}</strong>
+<button aria-label="Close resume" onClick={() => setResumeOpen(false)} style={{"background": "none", "border": "none", "fontSize": "1.2rem", "cursor": "pointer", "lineHeight": "1", "color": "#6b7280"}}>{"✕"}</button>
+</div>
+<iframe title="Matthew Huehne resume" src="/resume.pdf" style={{"flex": "1", "border": "none", "width": "100%"}}></iframe>
+</div>
+</div>
+
+
+</>);
 }
